@@ -1,0 +1,61 @@
+name: Deploy site to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Permisos que necesita el deploy a Pages.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Un solo deploy a la vez; no cancela el que esté en curso.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 12
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build all projects
+        # SITE_BASE se deriva del nombre del repo: /<repo>/.
+        # Cada proyecto Vite lo usa para prefijar sus rutas.
+        env:
+          SITE_BASE: /${{ github.event.repository.name }}/
+        run: pnpm build
+
+      - name: Assemble unified site
+        run: node scripts/assemble-site.mjs
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

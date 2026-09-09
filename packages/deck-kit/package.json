@@ -1,0 +1,16 @@
+{
+  "name": "@ppts/deck-kit",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./formula.css": "./src/component/math/formula.css"
+  },
+  "dependencies": {
+    "reveal.js": "^6.0.1"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.0"
+  }
+}

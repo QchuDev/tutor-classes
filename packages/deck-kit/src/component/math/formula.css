@@ -1,0 +1,53 @@
+/* 
+  Estilos predefinidos del componente Formula.
+  Se importan una sola vez desde main; las clases se aplican
+  según las opciones pasadas a la función `formula()`. 
+*/
+
+.formula {
+  display: inline-block;
+  padding: 0.5em 1em;
+  border-radius: 0.4em;
+  font-family: "Cambria Math", "Latin Modern Math", Georgia, serif;
+  line-height: 1.4;
+}
+
+/* --- Variantes de color (option: variant) --- */
+.formula--default {
+  background: rgba(255, 255, 255, 0.06);
+  color: #f2f2f2;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.formula--primary {
+  background: rgba(66, 133, 244, 0.15);
+  color: #8ab4f8;
+  border: 1px solid rgba(66, 133, 244, 0.4);
+}
+
+.formula--accent {
+  background: rgba(255, 193, 7, 0.12);
+  color: #ffd54f;
+  border: 1px solid rgba(255, 193, 7, 0.35);
+}
+
+/* --- Tamaños (option: size) --- */
+.formula--sm { font-size: 1rem; }
+.formula--md { font-size: 1.6rem; }
+.formula--lg { font-size: 2.4rem; }
+
+/* --- Título opcional (option: title) --- */
+.formula-title {
+  display: block;
+  margin-bottom: 0.4em;
+  font-size: 0.8em;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+/* --- Alineación del bloque (option: align) --- */
+.formula-wrap { margin: 0.6em 0; }
+.formula-wrap--left { text-align: left; }
+.formula-wrap--center { text-align: center; }
+.formula-wrap--right { text-align: right; }
