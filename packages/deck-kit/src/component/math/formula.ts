@@ -1,5 +1,5 @@
 // Componente: Formula
-// Función configurable que devuelve una fórmula formateada como HTML,
+// Función configurable que devuelve una fórmula LaTeX formateada como HTML,
 // lista para inyectar dentro de un <section> de reveal.js.
 // Los estilos viven en ./formula.css (importado una vez desde main).
 
@@ -22,13 +22,6 @@ export interface FormulaOptions {
   size?: FormulaSize;
   /** Alineación del bloque (left | center | right) */
   align?: FormulaAlign;
-  /**
-   * Trata la expresión como LaTeX (por defecto: true). Se envuelve en
-   * delimitadores \( \) para que el plugin `math` de reveal.js la renderice,
-   * y NO se escapa el HTML (el motor necesita las barras invertidas).
-   * Pon `latex: false` para mostrar la expresión como texto plano escapado.
-   */
-  latex?: boolean;
 }
 
 /** Escapa caracteres HTML para evitar inyección al interpolar texto. */
@@ -42,36 +35,31 @@ function escapeHtml(input: string): string {
 }
 
 /**
- * Devuelve el HTML de una fórmula formateada según las opciones.
+ * Devuelve el HTML de una fórmula LaTeX formateada según las opciones.
  *
- * @param expression - La expresión a mostrar, p. ej. "v = Δx / Δt".
+ * La expresión SIEMPRE se interpreta como LaTeX: se envuelve en delimitadores
+ * \( \) para que el plugin `math` de reveal.js (KaTeX) la renderice. Por eso
+ * no se escapa el HTML de la expresión (el motor necesita las barras invertidas).
+ *
+ * @param expression - La expresión LaTeX, p. ej. "x = \\dfrac{-b}{2a}".
  * @param options - Configuración opcional de estilo.
  * @returns Cadena HTML lista para insertar en un slide.
  *
  * @example
- * // Texto plano con estilo
- * formula("a = Δv / Δt", { title: "Aceleración", variant: "primary", size: "lg" })
+ * formula("x = x_0 + v_0 t + \\tfrac{1}{2} a t^2", { size: "lg" })
  *
  * @example
- * // LaTeX (requiere el plugin math de reveal.js registrado)
- * formula("x = x_0 + v_0 t + \\tfrac{1}{2} a t^2", { latex: true, size: "lg" })
+ * formula("a^2 + b^2 = c^2", { title: "Pitágoras", variant: "primary" })
  */
 export function formula(
   expression: string,
   options: FormulaOptions = {}
 ): string {
-  const {
-    title,
-    variant = "default",
-    size = "md",
-    align = "center",
-    latex = true,
-  } = options;
+  const { title, variant = "default", size = "md", align = "center" } = options;
 
-  // En modo LaTeX no escapamos: el motor (KaTeX/MathJax) necesita las
-  // barras invertidas. La expresión se envuelve en delimitadores \( \).
-  // En modo texto plano sí escapamos para evitar inyección de HTML.
-  const exprHtml = latex ? `\\(${expression}\\)` : escapeHtml(expression);
+  // Siempre LaTeX: envolvemos en \( \) y NO escapamos (KaTeX necesita las
+  // barras invertidas). El título sí se escapa porque es texto plano.
+  const exprHtml = `\\(${expression}\\)`;
 
   const titleHtml = title
     ? `<span class="formula-title">${escapeHtml(title)}</span>`

@@ -68,15 +68,15 @@ const slidesHtml = [
   ),
 
   // ═══════════════════════════════════════════════════════════════════════
-  //  6. FÓRMULA — modo texto plano (latex: false), sin renderizar LaTeX
+  //  6. FÓRMULA — LaTeX más elaborado (fracciones, raíces, subíndices)
+  //     El argumento SIEMPRE se interpreta como LaTeX.
   // ═══════════════════════════════════════════════════════════════════════
   Slide(
-    formula("velocidad = distancia / tiempo", {
-      latex: false,
+    formula("x = \\dfrac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}", {
       variant: "primary",
-      size: "md",
+      size: "lg",
     }),
-    { title: "formula · texto plano (latex: false)" }
+    { title: "formula · LaTeX elaborado" }
   ),
 
   // ═══════════════════════════════════════════════════════════════════════
